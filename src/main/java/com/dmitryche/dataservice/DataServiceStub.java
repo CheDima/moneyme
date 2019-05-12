@@ -31,14 +31,24 @@ public class DataServiceStub implements DataService {
     @Override
     public TransactionResponse processTransaction(TransactionRequest request) {
         try {
+            Account debtAccount = getAccountByNum(request.getDebtAccount()).orElseThrow();
+            Account credAccount = getAccountByNum(request.getCredAccount()).orElseThrow();
+
+
+            // -------- In real life this part should be executed as DB transaction
             transactions.add(new Transaction(
-                    getAccountByNum(request.getDebtAccount()).orElseThrow(),
-                    getAccountByNum(request.getCredAccount()).orElseThrow(),
+                    debtAccount,
+                    credAccount,
                     ZonedDateTime.now(),
                     request.getAmount(),
                     request.getMessage()));
+            credAccount.setBalance(credAccount.getBalance() - request.getAmount());
+            debtAccount.setBalance(debtAccount.getBalance() + request.getAmount());
+            // ------------- DB transaction commit
+
+
             return new TransactionResponse(TransactionResult.SUCCESS,
-                    String.format("Money Transferred from %s to %s", request.getCredAccount(), request.getDebtAccount()));
+                    String.format("Money transferred from %s to %s", request.getCredAccount(), request.getDebtAccount()));
 
         } catch (Exception ex) { // more specific exceptions should be caught here
             return new TransactionResponse(TransactionResult.ERROR,
@@ -52,22 +62,26 @@ public class DataServiceStub implements DataService {
         return getAccounts().stream().filter(acc -> acc.getNumber().equals(accNumber)).findFirst();
     }
 
+    @Override
+    public List<Transaction> getAllTransactions() {
+        return transactions;
+    }
+
     private List<Account> getAccounts() {
-        if (accounts != null) {
-            return accounts;
+        if (accounts == null) {
+            JAXBContext jaxbContext = null;
+            Accounts accs = null;
+            try {
+                jaxbContext = JAXBContext.newInstance(Accounts.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                accs = (Accounts) jaxbUnmarshaller.unmarshal(new File(getClass().getClassLoader().getResource("accounts.xml").getFile()));
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+            accounts = accs.getAccounts();
         }
 
-        JAXBContext jaxbContext = null;
-        Accounts accs = null;
-        try {
-            jaxbContext = JAXBContext.newInstance(Accounts.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            accs = (Accounts) jaxbUnmarshaller.unmarshal(new File(getClass().getClassLoader().getResource("accounts.xml").getFile()));
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-        return accs.getAccounts();
-
+        return accounts;
     }
 
     @XmlRootElement(name = "accounts")

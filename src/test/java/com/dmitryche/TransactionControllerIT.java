@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TransactionControllerTest {
+public class TransactionControllerIT {
 
     private HttpServer server;
     private WebTarget target;
@@ -37,16 +37,27 @@ public class TransactionControllerTest {
 
 
     @Test
-    public void testTransfer() {
+    public void testTransferNegative() {
         Entity<TransactionRequest> postParam = Entity.entity(
-                new TransactionRequest("SENDER_ACCOUNT", "RECEIVER_ACCOUNT", 666.0, "Just to do it"), MediaType.APPLICATION_JSON_TYPE);
+                new TransactionRequest("NO_ACCOUNT", "NO_ACCOUNT_1", 666.0, "Just to do it"), MediaType.APPLICATION_JSON_TYPE);
+        TransactionResponse response = target.path("transfer")
+                .request(MediaType.APPLICATION_JSON).post(postParam)
+                .readEntity(TransactionResponse.class);
+
+        assertEquals(TransactionResult.ERROR, response.getResult());
+        assertTrue(response.getComment().contains("not found: NO_ACCOUNT"));
+    }
+
+    @Test
+    public void testTransferPositive() {
+        Entity<TransactionRequest> postParam = Entity.entity(
+                new TransactionRequest("TEST_ACCOUNT_1", "TEST_ACCOUNT_2", 5.0, "Just to do it"), MediaType.APPLICATION_JSON_TYPE);
         TransactionResponse response = target.path("transfer")
                 .request(MediaType.APPLICATION_JSON).post(postParam)
                 .readEntity(TransactionResponse.class);
 
         assertEquals(TransactionResult.SUCCESS, response.getResult());
-        assertTrue(response.getComment().contains("from SENDER_ACCOUNT"));
-        assertTrue(response.getComment().contains("to RECEIVER_ACCOUNT"));
+        assertTrue(response.getComment().contains("Money transferred"));
     }
 
 }

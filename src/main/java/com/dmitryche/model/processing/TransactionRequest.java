@@ -9,7 +9,7 @@ public class TransactionRequest {
     public TransactionRequest() {
     }
 
-    public TransactionRequest(String debtAccount, String credAccount, Double amount, String message) {
+    public TransactionRequest(String credAccount, String debtAccount, Double amount, String message) {
         this.debtAccount = debtAccount;
         this.credAccount = credAccount;
         this.amount = amount;

@@ -9,11 +9,16 @@ import com.dmitryche.service.validation.ValidationService;
 import javax.inject.Inject;
 
 public class TransactionServiceImpl implements TransactionService {
-    @Inject
+
     ValidationService validationService;
 
-    @Inject
     DataService dataService;
+
+    @Inject
+    public TransactionServiceImpl(ValidationService validationService, DataService dataService) {
+        this.validationService = validationService;
+        this.dataService = dataService;
+    }
 
     @Override
     public TransactionResponse transfer(TransactionRequest request) {
