@@ -45,6 +45,12 @@ public class DataServiceIT {
         assertEquals(credBalance - amount, accFrom.getBalance(), 0);
         assertEquals(debtBalance + amount, accTo.getBalance(), 0);
         assertSame(response.getResult(), TransactionResult.SUCCESS);
+    }
 
+    @Test
+    public void testGetAccountByNumber() {
+        Account acc = dataService.getAccountByNum("TEST_ACCOUNT_1").orElse(null);
+        assertNotNull(acc);
+        assertEquals("TEST_ACCOUNT_1", acc.getNumber());
     }
 }

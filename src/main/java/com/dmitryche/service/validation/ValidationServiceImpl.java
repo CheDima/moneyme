@@ -16,8 +16,6 @@ public class ValidationServiceImpl implements ValidationService {
         dataService = ds;
     }
 
-    ;
-
     @Override
     public ValidationResult validateTransaction(TransactionRequest request) {
         List<String> errorMsgs = new ArrayList<>();

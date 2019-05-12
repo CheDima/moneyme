@@ -1,6 +1,7 @@
 package com.dmitryche.service.transaction;
 
 import com.dmitryche.dataservice.DataService;
+import com.dmitryche.model.Account;
 import com.dmitryche.model.processing.TransactionRequest;
 import com.dmitryche.model.processing.TransactionResponse;
 import com.dmitryche.service.validation.ValidationResult;
@@ -27,5 +28,10 @@ public class TransactionServiceImpl implements TransactionService {
             return validationResult.buildResponse();
         }
         return dataService.processTransaction(request);
+    }
+
+    @Override
+    public Account getAccountByNumber(String number) {
+        return dataService.getAccountByNum(number).orElse(null);
     }
 }
