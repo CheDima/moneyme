@@ -1,7 +1,7 @@
 package com.dmitryche;
 
 import com.dmitryche.dataservice.DataService;
-import com.dmitryche.dataservice.DataServiceImpl;
+import com.dmitryche.dataservice.DataServiceStub;
 import com.dmitryche.service.transaction.TransactionService;
 import com.dmitryche.service.transaction.TransactionServiceImpl;
 import com.dmitryche.service.validation.ValidationService;
@@ -18,8 +18,9 @@ public class AppConfig extends ResourceConfig {
             @Override
             protected void configure() {
                 bind(TransactionServiceImpl.class).to(TransactionService.class);
+                bind(DataServiceStub.class).to(DataService.class);
                 bind(ValidationServiceImpl.class).to(ValidationService.class);
-                bind(DataServiceImpl.class).to(DataService.class);
+                bind(DataServiceStub.class).to(DataService.class);
             }
         });
     }

@@ -4,14 +4,24 @@ public class TransactionRequest {
     private String debtAccount;
     private String credAccount;
     private Double amount;
+    private String message;
 
     public TransactionRequest() {
     }
 
-    public TransactionRequest(String credAccount, String debtAccount,  Double amount) {
+    public TransactionRequest(String debtAccount, String credAccount, Double amount, String message) {
         this.debtAccount = debtAccount;
         this.credAccount = credAccount;
         this.amount = amount;
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setDebtAccount(String debtAccount) {

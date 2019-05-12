@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<accounts>
+    <account>
+        <balanse>1000</balanse>
+        <number>111222333</number>
+    </account>
+    <account>
+        <balanse>-1000</balanse>
+        <number>666666666</number>
+    </account>
+    <account>
+        <balanse>0</balanse>
+        <number>1234567890</number>
+    </account>
+</accounts>

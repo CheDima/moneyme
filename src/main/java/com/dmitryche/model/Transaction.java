@@ -10,6 +10,14 @@ public class Transaction {
     private String message;
     //TODO: Add currency
 
+    public Transaction(Account debtAccount, Account credAccount, ZonedDateTime transactionTime, Double amount, String message) {
+        this.debtAccount = debtAccount;
+        this.credAccount = credAccount;
+        this.transactionTime = transactionTime;
+        this.amount = amount;
+        this.message = message;
+    }
+
     public Double getAmount() {
         return amount;
     }
