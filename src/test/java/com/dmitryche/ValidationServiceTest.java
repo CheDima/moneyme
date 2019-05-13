@@ -15,17 +15,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceTest {
 
     @Mock
-    DataService dataService = new DataServiceStub();
+    private DataService dataService = new DataServiceStub();
 
-    ValidationService validationService;
+    private ValidationService validationService;
 
     @Before
     public void setup() {
@@ -47,6 +46,7 @@ public class ValidationServiceTest {
         TransactionRequest noAccRequest = new TransactionRequest("NO_ACC", "TEST_ACC2", 20.0, "Happy birthday");
         ValidationResult result2 = validationService.validateTransaction(noAccRequest);
         assertFalse(result2.isValid());
+        assertTrue(result2.getDescription().contains("account not found"));
     }
 
     @Test
@@ -54,5 +54,15 @@ public class ValidationServiceTest {
         TransactionRequest notEnoughMoneyRequest = new TransactionRequest("TEST_ACC1", "TEST_ACC2", 20000.0, "Happy birthday");
         ValidationResult result3 = validationService.validateTransaction(notEnoughMoneyRequest);
         assertFalse(result3.isValid());
+        assertEquals(result3.getDescription(), "Balance of credit account is less than transaction amount");
     }
+
+    @Test
+    public void testValidateTransferBetweenSameAccount() {
+        TransactionRequest validRequest = new TransactionRequest("TEST_ACC1", "TEST_ACC1", 20.0, "Happy birthday");
+        ValidationResult result4 = validationService.validateTransaction(validRequest);
+        assertFalse(result4.isValid());
+        assertEquals(result4.getDescription(), "You cannot transfer money to the same account");
+    }
+
 }

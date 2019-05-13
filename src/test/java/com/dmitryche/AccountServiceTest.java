@@ -3,8 +3,8 @@ package com.dmitryche;
 import com.dmitryche.dataservice.DataService;
 import com.dmitryche.dataservice.DataServiceStub;
 import com.dmitryche.model.processing.TransactionRequest;
-import com.dmitryche.service.transaction.TransactionService;
-import com.dmitryche.service.transaction.TransactionServiceImpl;
+import com.dmitryche.service.transaction.AccountService;
+import com.dmitryche.service.transaction.AccountServiceImpl;
 import com.dmitryche.service.validation.ValidationResult;
 import com.dmitryche.service.validation.ValidationService;
 import com.dmitryche.service.validation.ValidationServiceImpl;
@@ -16,28 +16,31 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 
+/**
+ * It is closely related to DataService so mainly testing happens in Integration Test
+ */
 @RunWith(MockitoJUnitRunner.class)
-public class TransactionServiceTest {
+public class AccountServiceTest {
 
     @Spy
-    DataService dataService = new DataServiceStub();
+    private DataService dataService = new DataServiceStub();
 
-    TransactionService transactionService;
-    ValidationService validationService;
+    private AccountService accountService;
+    private ValidationService validationService;
 
-    TransactionRequest dummyRequest = new TransactionRequest("", "", 100.0, "");
-    ValidationResult validResult = new ValidationResult(true, "Ok");
+    private TransactionRequest dummyRequest = new TransactionRequest("acc1", "acc2", 100.0, "comment");
+    private ValidationResult validResult = new ValidationResult(true, "Ok");
 
     @Before
     public void setup() {
         validationService = mock(ValidationServiceImpl.class);
-        transactionService = new TransactionServiceImpl(validationService, dataService);
+        accountService = new AccountServiceImpl(validationService, dataService);
     }
 
     @Test
     public void testProcessMethodCalled() {
         when(validationService.validateTransaction(dummyRequest)).thenReturn(validResult);
-        transactionService.transfer(dummyRequest);
+        accountService.transfer(dummyRequest);
         verify(dataService).processTransaction(dummyRequest);
     }
 }

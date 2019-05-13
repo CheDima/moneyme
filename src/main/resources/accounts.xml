@@ -2,11 +2,11 @@
 <accounts>
     <account>
         <balance>1000</balance>
-        <number>111222333</number>
+        <number>TEST_ACCOUNT_1</number>
     </account>
     <account>
         <balance>-1000</balance>
-        <number>666666666</number>
+        <number>TEST_ACCOUNT_2</number>
     </account>
     <account>
         <balance>0</balance>

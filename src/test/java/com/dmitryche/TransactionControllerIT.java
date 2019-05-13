@@ -1,8 +1,5 @@
 package com.dmitryche;
 
-import com.dmitryche.model.processing.TransactionRequest;
-import com.dmitryche.model.processing.TransactionResponse;
-import com.dmitryche.model.processing.TransactionResult;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
@@ -12,9 +9,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TransactionControllerIT {
@@ -35,29 +31,18 @@ public class TransactionControllerIT {
     }
 
 
-
     @Test
     public void testTransferNegative() {
-        Entity<TransactionRequest> postParam = Entity.entity(
-                new TransactionRequest("NO_ACCOUNT", "NO_ACCOUNT_1", 666.0, "Just to do it"), MediaType.APPLICATION_JSON_TYPE);
-        TransactionResponse response = target.path("transfer")
-                .request(MediaType.APPLICATION_JSON).post(postParam)
-                .readEntity(TransactionResponse.class);
-
-        assertEquals(TransactionResult.ERROR, response.getResult());
-        assertTrue(response.getComment().contains("not found: NO_ACCOUNT"));
+        String param = "{\"credAccount\":\"WRONG_ACCOUNT\", \"debtAccount\":\"TEST_ACCOUNT_2\", \"amount\":\"5.0\", \"message\":\"Just to do it\"}";
+        Response response = target.path("transfer").request().post(Entity.json(param));
+        assertTrue(response.readEntity(String.class).contains("not found: WRONG_ACCOUNT"));
     }
 
     @Test
     public void testTransferPositive() {
-        Entity<TransactionRequest> postParam = Entity.entity(
-                new TransactionRequest("TEST_ACCOUNT_1", "TEST_ACCOUNT_2", 5.0, "Just to do it"), MediaType.APPLICATION_JSON_TYPE);
-        TransactionResponse response = target.path("transfer")
-                .request(MediaType.APPLICATION_JSON).post(postParam)
-                .readEntity(TransactionResponse.class);
-
-        assertEquals(TransactionResult.SUCCESS, response.getResult());
-        assertTrue(response.getComment().contains("Money transferred"));
+        String param = "{\"credAccount\":\"TEST_ACCOUNT_1\", \"debtAccount\":\"TEST_ACCOUNT_2\", \"amount\":\"5.0\", \"message\":\"Just to do it\"}";
+        Response response = target.path("transfer").request().post(Entity.json(param));
+        assertTrue(response.readEntity(String.class).contains("Money transferred"));
     }
 
 }

@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface DataService {
     TransactionResponse processTransaction(TransactionRequest request);
-
     Optional<Account> getAccountByNum(String accNumber);
-
     List<Transaction> getAllTransactions();
+
+    List<Account> getAllAccounts();
 }

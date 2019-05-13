@@ -24,9 +24,9 @@ import java.util.Optional;
  */
 public class DataServiceStub implements DataService {
 
-    // I know, we should not do this on prod :) Only for stub purposes!
-    private List<Account> accounts = null;
-    private List<Transaction> transactions = new ArrayList<>();
+    // Only for stub purposes!
+    private static List<Account> accounts = null;
+    private static List<Transaction> transactions = new ArrayList<>();
 
     @Override
     public TransactionResponse processTransaction(TransactionRequest request) {
@@ -67,16 +67,22 @@ public class DataServiceStub implements DataService {
         return transactions;
     }
 
+    @Override
+    public List<Account> getAllAccounts() {
+        return getAccounts();
+    }
+
     private List<Account> getAccounts() {
         if (accounts == null) {
-            JAXBContext jaxbContext = null;
+            JAXBContext jaxbContext;
             Accounts accs = null;
             try {
                 jaxbContext = JAXBContext.newInstance(Accounts.class);
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                accs = (Accounts) jaxbUnmarshaller.unmarshal(new File(getClass().getClassLoader().getResource("accounts.xml").getFile()));
-            } catch (JAXBException e) {
-                e.printStackTrace();
+                accs = (Accounts) jaxbUnmarshaller.unmarshal(
+                        new File(getClass().getClassLoader().getResource("accounts.xml").getFile()));
+            } catch (JAXBException | NullPointerException e) {
+                throw new RuntimeException(e);
             }
             accounts = accs.getAccounts();
         }

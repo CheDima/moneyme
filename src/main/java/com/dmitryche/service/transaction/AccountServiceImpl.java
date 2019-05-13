@@ -8,15 +8,15 @@ import com.dmitryche.service.validation.ValidationResult;
 import com.dmitryche.service.validation.ValidationService;
 
 import javax.inject.Inject;
+import java.util.List;
 
-public class TransactionServiceImpl implements TransactionService {
+public class AccountServiceImpl implements AccountService {
 
-    ValidationService validationService;
-
-    DataService dataService;
+    private ValidationService validationService;
+    private DataService dataService;
 
     @Inject
-    public TransactionServiceImpl(ValidationService validationService, DataService dataService) {
+    public AccountServiceImpl(ValidationService validationService, DataService dataService) {
         this.validationService = validationService;
         this.dataService = dataService;
     }
@@ -33,5 +33,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Account getAccountByNumber(String number) {
         return dataService.getAccountByNum(number).orElse(null);
+    }
+
+    @Override
+    public List<Account> getAccounts() {
+        return dataService.getAllAccounts();
     }
 }

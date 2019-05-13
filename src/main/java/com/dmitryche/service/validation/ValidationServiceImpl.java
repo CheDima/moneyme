@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ValidationServiceImpl implements ValidationService {
 
-    DataService dataService;
+    private DataService dataService;
 
     @Inject
     public ValidationServiceImpl(DataService ds) {

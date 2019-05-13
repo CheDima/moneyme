@@ -53,4 +53,11 @@ public class DataServiceIT {
         assertNotNull(acc);
         assertEquals("TEST_ACCOUNT_1", acc.getNumber());
     }
+
+    @Test
+    public void testGetAllAccounts() {
+        var acc = dataService.getAllAccounts();
+        assertNotNull(acc);
+        assertFalse(acc.isEmpty());
+    }
 }
