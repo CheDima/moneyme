@@ -8,12 +8,15 @@ account/bynumber/{account_number}
 
 POST
 transfer
+
+with JSON parameter
 {"credAccount":"YOUR_SENDER_ACCOUNT", "debtAccount":"YOUR_RECEIVER_ACCOUNT", "amount":"5.0", "message":"TRANSACTION_COMMENT_TEXT"}
 
 
 ## Example:
 ### Run it
 mvn exec:java -Dexec.mainClass="com.chedmitry.moneyme"
+(or java -jar...)
 
 ### Check all accounts
 http://localhost:8080/moneyme/account/all
