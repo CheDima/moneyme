@@ -65,3 +65,10 @@ _[
         "balance": 0
     }
 ]_
+
+## Useless remarks
+- Jersey framework was selected because it is relatively lightweight and has both REST and Dependency Injection
+- Nobody reads remarks
+- Data Service implementation should be moved in a separate independent component
+
+
