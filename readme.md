@@ -66,9 +66,12 @@ _[
     }
 ]_
 
+## TODOs
+- Add currencies and exchange rates
+- Add different methods for transactions display and search (boilerplate code, didn't want to clutter things up)
+
 ## Useless remarks
 - Jersey framework was selected because it is relatively lightweight and has both REST and Dependency Injection
 - Nobody reads remarks
 - Data Service implementation should be moved in a separate independent component
-
 
