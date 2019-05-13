@@ -17,7 +17,9 @@ mvn exec:java -Dexec.mainClass="com.chedmitry.moneyme"
 
 ### Check all accounts
 http://localhost:8080/moneyme/account/all
-[
+
+result:
+_[
     {
         "number": "TEST_ACCOUNT_1",
         "balance": 1000
@@ -30,19 +32,23 @@ http://localhost:8080/moneyme/account/all
         "number": "1234567890",
         "balance": 0
     }
-]
+]_
 
 ### Make a transaction:
 http://localhost:8080/moneyme/transfer
 >(POST with {"credAccount":"TEST_ACCOUNT_1", "debtAccount":"TEST_ACCOUNT_2", "amount":"5.0", "message":"Happy birthday"})
-{
+
+result:
+_{
     "result": "SUCCESS",
     "comment": "Money transferred from TEST_ACCOUNT_1 to TEST_ACCOUNT_2"
-}
+}_
 
 ### Check all accounts
 http://localhost:8080/moneyme/account/all
-[
+
+result:
+_[
     {
         "number": "TEST_ACCOUNT_1",
         "balance": 995
@@ -55,4 +61,4 @@ http://localhost:8080/moneyme/account/all
         "number": "1234567890",
         "balance": 0
     }
-]
+]_
