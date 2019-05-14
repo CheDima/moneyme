@@ -67,6 +67,7 @@ _[
 ]_
 
 ## TODOs
+- Add JavaDoc! (especially in DataService)
 - Add currencies and exchange rates
 - Add different methods for transactions display and search (boilerplate code, didn't want to clutter things up)
 
